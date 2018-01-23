@@ -4,10 +4,12 @@ uniform mat4 uMMatrix; //变换矩阵
 uniform vec3 uCamera;	//摄像机位置
 uniform vec3 uLightLocationSun;	//太阳光源位置
 in vec3 aPosition;  //顶点位置
+in vec4 aColor;     //
 in vec3 aNormal;    //法向量
 out vec4 vAmbient;
 out vec4 vDiffuse;
 out vec4 vSpecular;
+out vec4 vColor;
 
 //定位光光照计算的方法
 void pointLight(					//定位光光照计算的方法
@@ -51,4 +53,5 @@ void main()
    vAmbient=ambientTemp;
    vDiffuse=diffuseTemp;
    vSpecular=specularTemp;
+   vColor=aColor;
 }

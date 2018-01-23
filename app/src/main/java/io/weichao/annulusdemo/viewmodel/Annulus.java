@@ -23,6 +23,7 @@ public class Annulus {
     private int muMMatrixHandle;//位置、旋转变换矩阵
     private int maCameraHandle; //摄像机位置属性引用
     private int maPositionHandle; //顶点位置属性引用
+    private int maColorHandle;
     private int maNormalHandle; //顶点法向量属性引用
     private int maSunLightLocationHandle;//光源位置属性引用
 
@@ -107,6 +108,8 @@ public class Annulus {
         mProgram = GLES30Util.loadProgram(context, "model/annulus/script/vertex_shader.sh", "model/annulus/script/fragment_shader.sh");
         //获取程序中顶点位置属性引用
         maPositionHandle = GLES30.glGetAttribLocation(mProgram, "aPosition");
+        //
+        maColorHandle = GLES30.glGetAttribLocation(mProgram, "aColor");
         //获取程序中顶点法向量属性引用
         maNormalHandle = GLES30.glGetAttribLocation(mProgram, "aNormal");
         //获取程序中总变换矩阵引用
@@ -133,8 +136,10 @@ public class Annulus {
         //将光源位置传入渲染管线
         GLES30.glUniform3fv(maSunLightLocationHandle, 1, MatrixStateUtil.lightPositionFBSun);
 
-        //将顶点位置数据送入渲染管线（必须每次都指定）三角形线
+        //将顶点位置数据送入渲染管线（必须每次都指定）
         GLES30.glVertexAttribPointer(maPositionHandle, 3, GLES30.GL_FLOAT, false, 3 * 4, mPositionBuffer);
+        //
+        GLES30.glVertexAttrib4f(maColorHandle, 0.0f, 1.0f, 0.0f, 1.0f);
         //将顶点法向量数据送入渲染管线（必须每次都指定）
         GLES30.glVertexAttribPointer(maNormalHandle, 3, GLES30.GL_FLOAT, false, 3 * 4, mPositionBuffer);
         //启用顶点位置数据数组
@@ -142,7 +147,7 @@ public class Annulus {
         //启用顶点法向量数据数组
         GLES30.glEnableVertexAttribArray(maNormalHandle);
 
-        //绘制
+        //绘制三角形线
 //        GLES30.glDrawArrays(GLES30.GL_LINE_LOOP, 0, mVertexCount);
         //绘制图形
         GLES30.glDrawArrays(GLES30.GL_TRIANGLES, 0, mVertexCount);
